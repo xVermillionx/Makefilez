@@ -1,0 +1,10 @@
+exec-name
+.ccls
+.ccls-cache
+compile_commands.json
+CMakeCache.txt
+CMakeFiles/
+.cmake/
+Makefile
+cmake_install.cmake
+install_manifest.txt
