@@ -1,4 +1,7 @@
 PROGRAM=geo
+MAKE_INSTALL_BINDIR=/usr/bin
+EXECUTABLE_NAME=$(PROGRAM)
+INSTALLPATH=$(MAKE_INSTALL_BINDIR)
 
 CC=gcc
 LD=gcc
@@ -13,7 +16,7 @@ OBJECTFILES=$(wildcard *.c=.o)
 DEPENDFILE=dependencies.mk
 
 # Make Main Program
-$(PROGRAM): depend $(OBJECTFILES)
+$(EXECUTABLE_NAME): depend $(OBJECTFILES)
 	$(LD) -o $@ $(OBJECTFILES) $(LDFLAGS)
 
 # $(LD) -o $@ $^ $(LDFLAGS)
@@ -23,15 +26,22 @@ $(PROGRAM): depend $(OBJECTFILES)
 	$(CC) $(CFLAGS) -c $< -o$@
 
 # Clean Build
-rebuild: clean $(PROGRAM)
+rebuild: clean $(EXECUTABLE_NAME)
 
-.PHONY: clean depend rebuild run debug
+install: $(EXECUTABLE_NAME)
+	install -m 0755 $(EXECUTABLE_NAME) $(INSTALLPATH)
 
-run: $(PROGRAM)
-	./$(PROGRAM) $(ARGS)
+uninstall:$(INSTALLPATH)/$(EXECUTABLE_NAME)
+	rm -rf $(INSTALLPATH)/$(EXECUTABLE_NAME)
 
-debug: $(PROGRAM)
-	$(DEBUGGER) $(PROGRAM) $(ARGS)
+
+.PHONY: clean depend rebuild run debug install uninstall
+
+run: $(EXECUTABLE_NAME)
+	./$(EXECUTABLE_NAME) $(ARGS)
+
+debug: $(EXECUTABLE_NAME)
+	$(DEBUGGER) $(EXECUTABLE_NAME) $(ARGS)
 
 depend: $(DEPENDFILE) $(SOURCEFILES)
 	@gcc -MM $^ > $(DEPENDFILE)
