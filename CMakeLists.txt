@@ -34,7 +34,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # set(CMAKE_C_COMPILER gcc)
 # set(CMAKE_CXX_COMPILER g++)
 
-
 set(ROOT_DIR ${PROJECT_SOURCE_DIR}) # Change if needed
 if (NOT EXISTS ${ROOT_DIR}/.ccls)
   file(CONFIGURE OUTPUT ${ROOT_DIR}/.ccls CONTENT compile_commands.json)
@@ -44,10 +43,19 @@ if (EXISTS ${ROOT_DIR}/.ccls)
   file(CREATE_LINK ${CMAKE_BINARY_DIR}/compile_commands.json ${ROOT_DIR}/compile_commands.json COPY_ON_ERROR SYMBOLIC)
 endif()
 
-add_compile_definitions(${EXECUTABLE_NAME} PRIVATE
+target_compile_options(${EXECUTABLE_NAME} PRIVATE
+  -Wall
+  -Wextra
+  -Wpedantic
+  -Wconversion
+  -Werror=vla
+  -lstdc++
+)
+
+target_compile_definitions(${EXECUTABLE_NAME} PRIVATE
   $<$<CONFIG:Debug>:DEBUG>
   $<$<CONFIG:Release>:NDEBUG>
-  )
+)
 
 if(CMAKE_COMPILER_IS_GNUCC)
   message(NOTICE "Using gcc")

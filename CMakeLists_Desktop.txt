@@ -52,10 +52,10 @@ target_compile_options(${EXECUTABLE_NAME} PRIVATE
   -lstdc++
 )
 
-add_compile_definitions(${EXECUTABLE_NAME} PRIVATE
+target_compile_definitions(${EXECUTABLE_NAME} PRIVATE
   $<$<CONFIG:Debug>:DEBUG>
   $<$<CONFIG:Release>:NDEBUG>
-  )
+)
 
 if(CMAKE_COMPILER_IS_GNUCC)
   message(NOTICE "Using gcc")
